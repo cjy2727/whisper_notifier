@@ -8,7 +8,7 @@ frame:RegisterEvent("ADDON_LOADED")
 frame:RegisterEvent("CHAT_MSG_WHISPER")
 frame:RegisterEvent("CHAT_MSG_BN_WHISPER")
 
-local options = WhisperNotifierConfig:CreateOptionsUI(frame, WhisperNotifierDB)
+local options = WhisperNotifierConfig:CreateOptionsUI(frame, WhisperNotifierDB2)
 
 frame.bg = frame:CreateTexture(nil, "BACKGROUND")
 frame.bg:SetAllPoints(true)
@@ -61,7 +61,7 @@ msgEditBox:SetPoint("LEFT", msgLabel, "RIGHT", 10, 0)
 msgEditBox:SetScript("OnEnterPressed", function(self)
     local v = self:GetText()
     if v and v ~= "" then
-        WhisperNotifierDB.alertMsg = v
+        WhisperNotifierDB2.alertMsg = v
         frame.text:SetText(v)
     end
     self:ClearFocus()
@@ -72,7 +72,7 @@ muteCheckBox:SetPoint("LEFT", msgEditBox, "RIGHT", 10, 0)
 muteCheckBox.Text:SetText(L["MUTE"])
 muteCheckBox:SetChecked(false)
 muteCheckBox:SetScript("OnClick", function(self)
-    WhisperNotifierDB.mute = self:GetChecked()
+    WhisperNotifierDB2.mute = self:GetChecked()
 end)
 
 sizeSlider = CreateFrame("Slider", "WhisperNotifierFontSize", options, "OptionsSliderTemplate")
@@ -87,7 +87,7 @@ sizeEditBox = CreateNumberBox(options, 50)
 sizeEditBox:SetPoint("LEFT", sizeSlider, "RIGHT", 10, 0)
 sizeSlider:SetScript("OnValueChanged", function(self, value)
     value = math.floor(value)
-    WhisperNotifierDB.fontSize = value
+    WhisperNotifierDB2.fontSize = value
     frame.text:SetFont(fontPath, value, "OUTLINE")
     sizeEditBox:SetText(value)
 end)
@@ -109,9 +109,9 @@ yEditBox = CreateNumberBox(options, 50)
 yEditBox:SetPoint("LEFT", ySlider, "RIGHT", 10, 0)
 ySlider:SetScript("OnValueChanged", function(self, value)
     value = math.floor(value)
-    WhisperNotifierDB.posY = value
+    WhisperNotifierDB2.posY = value
     frame:ClearAllPoints()
-    frame:SetPoint("CENTER", UIParent, "BOTTOM", WhisperNotifierDB.posX, value)
+    frame:SetPoint("CENTER", UIParent, "BOTTOM", WhisperNotifierDB2.posX, value)
     yEditBox:SetText(value)
 end)
 yEditBox:SetScript("OnEnterPressed", function(self)
@@ -133,9 +133,9 @@ xEditBox = CreateNumberBox(options, 50)
 xEditBox:SetPoint("LEFT", xSlider, "RIGHT", 10, 0)
 xSlider:SetScript("OnValueChanged", function(self, value)
     value = math.floor(value)
-    WhisperNotifierDB.posX = value
+    WhisperNotifierDB2.posX = value
     frame:ClearAllPoints()
-    frame:SetPoint("CENTER", UIParent, "BOTTOM", value, WhisperNotifierDB.posY)
+    frame:SetPoint("CENTER", UIParent, "BOTTOM", value, WhisperNotifierDB2.posY)
     xEditBox:SetText(value)
 end)
 xEditBox:SetScript("OnEnterPressed", function(self)
@@ -156,7 +156,7 @@ local volumeEditBox = CreateNumberBox(options, 50)
 volumeEditBox:SetPoint("LEFT", volumeSlider, "RIGHT", 10, 0)
 local function SetVolumePercent(percent)
     percent = math.max(0, math.min(100, math.floor(percent or 0)))
-    WhisperNotifierDB.volume = percent / 100
+    WhisperNotifierDB2.volume = percent / 100
     if volumeSlider:GetValue() ~= percent then
         volumeSlider:SetValue(percent)
     end
@@ -182,7 +182,7 @@ local channels = {
     {text=L["CHANNEL_AMBIENCE"], value="Ambience"}
 }
 local function ChannelDropdown_OnClick(self)
-    WhisperNotifierDB.channel = self.value
+    WhisperNotifierDB2.channel = self.value
     UIDropDownMenu_SetSelectedValue(channelDropdown, self.value)
 end
 UIDropDownMenu_Initialize(channelDropdown, function(self, level)
@@ -195,16 +195,7 @@ UIDropDownMenu_Initialize(channelDropdown, function(self, level)
     end
 end)
 UIDropDownMenu_SetWidth(channelDropdown, 100)
-UIDropDownMenu_SetSelectedValue(channelDropdown, WhisperNotifierDB and WhisperNotifierDB.channel or "Master")
-
-
--- local bgAlertCheck = CreateFrame("CheckButton", nil, options, "ChatConfigCheckButtonTemplate")
--- bgAlertCheck:SetPoint("TOPLEFT", channelLabel, "BOTTOMLEFT", 0, -24)
--- bgAlertCheck.Text:SetText(L["BG_ALERT"])
--- bgAlertCheck:SetChecked(WhisperNotifierDB and WhisperNotifierDB.bgAlert or false)
--- bgAlertCheck:SetScript("OnClick", function(self)
---     WhisperNotifierDB.bgAlert = self:GetChecked()
--- end)
+UIDropDownMenu_SetSelectedValue(channelDropdown, WhisperNotifierDB2 and WhisperNotifierDB2.channel or "Master")
 
 local testBtn = CreateFrame("Button", nil, options, "UIPanelButtonTemplate")
 testBtn:SetPoint("TOPLEFT", volumeSlider, "BOTTOMLEFT", 0, -24)
@@ -215,20 +206,19 @@ testBtn:SetScript("OnClick", function()
 end)
 
 local function RefreshOptionsUI()
-    if not WhisperNotifierDB then return end
-    sizeSlider:SetValue(WhisperNotifierDB.fontSize)
-    ySlider:SetValue(WhisperNotifierDB.posY)
-    xSlider:SetValue(WhisperNotifierDB.posX)
-    sizeEditBox:SetText(WhisperNotifierDB.fontSize)
-    yEditBox:SetText(WhisperNotifierDB.posY)
-    xEditBox:SetText(WhisperNotifierDB.posX)
-    msgEditBox:SetText(WhisperNotifierDB.alertMsg)
-    muteCheckBox:SetChecked(WhisperNotifierDB.mute or false)
-    local percent = math.floor((WhisperNotifierDB.volume or 1) * 100 + 0.5)
+    if not WhisperNotifierDB2 then return end
+    sizeSlider:SetValue(WhisperNotifierDB2.fontSize)
+    ySlider:SetValue(WhisperNotifierDB2.posY)
+    xSlider:SetValue(WhisperNotifierDB2.posX)
+    sizeEditBox:SetText(WhisperNotifierDB2.fontSize)
+    yEditBox:SetText(WhisperNotifierDB2.posY)
+    xEditBox:SetText(WhisperNotifierDB2.posX)
+    msgEditBox:SetText(WhisperNotifierDB2.alertMsg)
+    muteCheckBox:SetChecked(WhisperNotifierDB2.mute or false)
+    local percent = math.floor((WhisperNotifierDB2.volume or 1) * 100 + 0.5)
     volumeSlider:SetValue(percent)
     volumeEditBox:SetText(percent)
-    UIDropDownMenu_SetSelectedValue(channelDropdown, WhisperNotifierDB.channel or "Master")
-    -- bgAlertCheck:SetChecked(WhisperNotifierDB.bgAlert or false)
+    UIDropDownMenu_SetSelectedValue(channelDropdown, WhisperNotifierDB2.channel or "Master")
 end
 
 options:SetScript("OnShow", RefreshOptionsUI)
@@ -244,48 +234,36 @@ local hideTimer
 
 frame:SetScript("OnEvent", function(self, event, arg1)
     if event == "ADDON_LOADED" and arg1 == addonName then
-        WhisperNotifierDB = WhisperNotifierDB or {}
+        WhisperNotifierDB2 = WhisperNotifierDB2 or {}
         for k, v in pairs(defaults) do
-            if WhisperNotifierDB[k] == nil then
-                WhisperNotifierDB[k] = v
+            if WhisperNotifierDB2[k] == nil then
+                WhisperNotifierDB2[k] = v
             end
         end
-        if WhisperNotifierDB.volume == nil then WhisperNotifierDB.volume = 1 end
-        if WhisperNotifierDB.channel == nil then WhisperNotifierDB.channel = "Master" end
-        frame.text:SetFont(fontPath, WhisperNotifierDB.fontSize, "OUTLINE")
+        frame.text:SetFont(fontPath, WhisperNotifierDB2.fontSize, "OUTLINE")
         frame:ClearAllPoints()
-        frame:SetPoint("CENTER", UIParent, "BOTTOM", WhisperNotifierDB.posX, WhisperNotifierDB.posY)
-        if WhisperNotifierDB.bgAlert == nil then WhisperNotifierDB.bgAlert = false end
+        frame:SetPoint("CENTER", UIParent, "BOTTOM", WhisperNotifierDB2.posX, WhisperNotifierDB2.posY)
         return
     end
     if event == "CHAT_MSG_WHISPER" or event == "CHAT_MSG_BN_WHISPER" or event == "TEST" then
         if hideTimer then hideTimer:Cancel() end
         self:Show()
         if not self.anim:IsPlaying() then self.anim:Play() end
-        local playSound = not (WhisperNotifierDB and WhisperNotifierDB.mute)
+        local playSound = not (WhisperNotifierDB2 and WhisperNotifierDB2.mute)
         if playSound then
-            -- local isForeground = false
-            -- if WOW_PROJECT_ID and WOW_PROJECT_ID == WOW_PROJECT_MAINLINE then
-            --     isForeground = IsGameWindowActive and IsGameWindowActive() or true
-            -- end
-            if isForeground or WhisperNotifierDB.bgAlert then
-                local channel = WhisperNotifierDB.channel or "Master"
-                local cvarName = "Sound_MasterVolume"
-                if channel == "SFX" then cvarName = "Sound_SFXVolume"
-                elseif channel == "Music" then cvarName = "Sound_MusicVolume"
-                elseif channel == "Ambience" then cvarName = "Sound_AmbienceVolume" end
-                local prevVolume = tonumber(GetCVar(cvarName)) or 1
-                local addonVolume = WhisperNotifierDB.volume or 1
-                local tempVolume = prevVolume * addonVolume
-                SetCVar(cvarName, tempVolume)
-                PlaySound(15273, channel)
-                C_Timer.After(0.5, function()
-                    SetCVar(cvarName, prevVolume)
-                end)
-            end
-            -- if not isForeground and WhisperNotifierDB.bgAlert and FlashClientIcon then
-            --     FlashClientIcon()
-            -- end
+            local channel = WhisperNotifierDB2.channel or "Master"
+			local cvarName = "Sound_MasterVolume"
+			if channel == "SFX" then cvarName = "Sound_SFXVolume"
+			elseif channel == "Music" then cvarName = "Sound_MusicVolume"
+			elseif channel == "Ambience" then cvarName = "Sound_AmbienceVolume" end
+			local prevVolume = tonumber(GetCVar(cvarName)) or 1
+			local addonVolume = WhisperNotifierDB2.volume or 1
+			local tempVolume = prevVolume * addonVolume
+			SetCVar(cvarName, tempVolume)
+			PlaySound(15273, channel)
+			C_Timer.After(0.5, function()
+				SetCVar(cvarName, prevVolume)
+			end)
         end
         hideTimer = C_Timer.NewTimer(3, function()
             self.anim:Stop()

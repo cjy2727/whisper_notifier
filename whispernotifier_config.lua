@@ -1,5 +1,4 @@
--- WhisperNotifier 설정 및 옵션 UI 분리
-
+-- whispernotifier_config.lua
 local L = {}
 local locale = GetLocale()
 
@@ -19,7 +18,6 @@ if locale == "koKR" then
     L["CHANNEL_SFX"] = "효과음"
     L["CHANNEL_MUSIC"] = "배경음악"
     L["CHANNEL_AMBIENCE"] = "환경음"
-    L["BG_ALERT"] = "백그라운드 알림(소리+반짝임)"
 else
     L["TITLE"] = "WhisperNotifier"
     L["DESC"] = "Show an on-screen alert and play a sound when you receive a whisper."
@@ -36,7 +34,6 @@ else
     L["CHANNEL_SFX"] = "SFX"
     L["CHANNEL_MUSIC"] = "Music"
     L["CHANNEL_AMBIENCE"] = "Ambience"
-    L["BG_ALERT"] = "Alert in background (sound+flash)"
 end
 
 local defaults = {
@@ -44,6 +41,9 @@ local defaults = {
     posX = 0,
     posY = 880,
     alertMsg = L["DEFAULT_TEXT"],
+	volume = 1,
+	channel = "Master",
+	mute = false
 }
 
 local FrameUtils = {}

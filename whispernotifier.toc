@@ -3,10 +3,10 @@
 ## Notes: Display and sound alert when receiving whispers
 ## Author: Gink
 ## IconTexture: Interface\AddOns\WhisperNotifier\WhisperNotifier.png
-## Version: 1.0.2
+## Version: 1.0.3
 ## X-Category: Chat
 ## X-License: All Rights Reserved
-## SavedVariables: WhisperNotifierDB
+## SavedVariables: WhisperNotifierDB2
 
 whispernotifier_config.lua
 WhisperNotifier.lua
