@@ -3,7 +3,7 @@
 ## Notes: Display and sound alert when receiving whispers
 ## Author: Gink
 ## IconTexture: Interface\AddOns\WhisperNotifier\whispernotifier.png
-## Version: 1.0.3
+## Version: 1.0.4
 ## X-Category: Chat
 ## X-License: All Rights Reserved
 ## SavedVariables: WhisperNotifierDB2
